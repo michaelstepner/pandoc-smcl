@@ -76,6 +76,7 @@ function Doc(body, metadata, variables)
   local function add(s)
     table.insert(buffer, s)
   end
+  add('{smcl}\n')
   add(body)
   if #notes > 0 then
     add('<ol class="footnotes">')
@@ -109,7 +110,7 @@ function Emph(s)
 end
 
 function Strong(s)
-  return "<strong>" .. s .. "</strong>"
+  return "{bf:" .. s .. "}"
 end
 
 function Subscript(s)
@@ -180,12 +181,15 @@ function Plain(s)
 end
 
 function Para(s)
-  return "<p>" .. s .. "</p>"
+  return "{pstd}" .. s .. "{p_end}"
 end
 
 -- lev is an integer, the header level.
 function Header(lev, s, attr)
-  return "<h" .. lev .. attributes(attr) ..  ">" .. s .. "</h" .. lev .. ">"
+  if (lev==1) then
+    return "\n{title:" .. s .. "}"
+  end
+  --return "<h" .. lev .. attributes(attr) ..  ">" .. s .. "</h" .. lev .. ">"
 end
 
 function BlockQuote(s)
@@ -259,41 +263,27 @@ function Table(caption, aligns, widths, headers, rows)
   local function add(s)
     table.insert(buffer, s)
   end
-  add("<table>")
-  if caption ~= "" then
-    add("<caption>" .. caption .. "</caption>")
-  end
-  if widths and widths[1] ~= 0 then
-    for _, w in pairs(widths) do
-      add('<col width="' .. string.format("%d%%", w * 100) .. '" />')
-    end
+  if not (string.match(caption, 'col1width=(%d+)')==nil) then
+    add("{synoptset " .. string.match(caption, 'col1width=(%d+)') .. " tabbed}{...}")
+  else
+    add("{synoptset tabbed}{...}")
   end
   local header_row = {}
   local empty_header = true
   for i, h in pairs(headers) do
-    local align = html_align(aligns[i])
-    table.insert(header_row,'<th align="' .. align .. '">' .. h .. '</th>')
+    if (i==1) and not (h=="") then
+      add('{synopthdr:' .. h .. '}\n{synoptline}')
+    end
     empty_header = empty_header and h == ""
   end
-  if empty_header then
-    head = ""
-  else
-    add('<tr class="header">')
-    for _,h in pairs(header_row) do
-      add(h)
-    end
-    add('</tr>')
-  end
-  local class = "even"
   for _, row in pairs(rows) do
-    class = (class == "even" and "odd") or "even"
-    add('<tr class="' .. class .. '">')
-    for i,c in pairs(row) do
-      add('<td align="' .. html_align(aligns[i]) .. '">' .. c .. '</td>')
+    if (#row>=2) then
+      add('{synopt :' .. row[1] .. '}' .. row[2] .. '{p_end}')
     end
-    add('</tr>')
   end
-  add('</table')
+  if not empty_header then
+    add('{synoptline}')
+  end
   return table.concat(buffer,'\n')
 end
 
