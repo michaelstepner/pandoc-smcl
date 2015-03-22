@@ -16,19 +16,15 @@
 local function escape(s, in_attribute)
   return s:gsub("[<>&\"']",
     function(x)
-      if x == '<' then
-        return '&lt;'
-      elseif x == '>' then
-        return '&gt;'
-      elseif x == '&' then
-        return '&amp;'
-      elseif x == '"' then
-        return '&quot;'
-      elseif x == "'" then
-        return '&#39;'
-      else
+      --if x == '<' then
+      --  return '&lt;'
+      --elseif x == '>' then
+      --  return '&gt;'
+      --elseif x == '&' then
+      --  return '&amp;'
+      --else
         return x
-      end
+      --end
     end)
 end
 
