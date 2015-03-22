@@ -188,7 +188,12 @@ function Plain(s)
 end
 
 function Para(s)
-  return "{pstd}" .. s .. "{p_end}"
+  local pdirective = string.match(s, '^{p[^}]*}')
+  if (pdirective == nil) then
+    return "{pstd}" .. s .. "{p_end}"
+  else
+    return s .. "{p_end}"
+  end
 end
 
 -- lev is an integer, the header level.
