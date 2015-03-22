@@ -3,6 +3,7 @@
 {pstd}{bf:maptile {hline 2} Geography: state}{p_end}
 
 
+{marker description}{...}
 {title:Description}
 
 {pstd}{bf:state} generates a map of U.S. states.{p_end}
@@ -10,6 +11,7 @@
 {pstd}It displays Alaska and Hawaii rescaled and moved to the bottom left of the map, below the continental US, for ease of viewing.{p_end}
 
 
+{marker geographic-id-variables}{...}
 {title:Geographic ID variables}
 
 {synoptset 13 tabbed}{...}
@@ -18,12 +20,14 @@
 {synopt :{bf:statename}}unabbreviated state names{p_end}
 
 
+{marker geography-specific-options}{...}
 {title:Geography-Specific Options}
 
 {synoptset tabbed}{...}
 {synopt :{opth geoid(varname)}}specifies the geographic ID variable to use; default is {bf:geoid(state)}{p_end}
 
 
+{marker author}{...}
 {title:Author}
 
 {pstd}Michael Stepner{break} stepner@mit.edu{p_end}

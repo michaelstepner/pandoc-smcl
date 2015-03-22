@@ -44,6 +44,16 @@ local function attributes(attr)
   return table.concat(attr_table)
 end
 
+-- Helper function that extracts the "id" element
+-- of an attributes table and returns it.
+local function attributesExtractID(attr)
+  for x,y in pairs(attr) do
+    if x=="id" and y and y ~= "" then
+      return escape(y,true)
+    end
+  end
+end
+
 -- Run cmd on a temporary file containing inp and return result.
 local function pipe(cmd, inp)
   local tmp = os.tmpname()
@@ -187,9 +197,8 @@ end
 -- lev is an integer, the header level.
 function Header(lev, s, attr)
   if (lev==1) then
-    return "\n{title:" .. s .. "}"
+    return "\n{marker " .. attributesExtractID(attr) .. "}{...}\n{title:" .. s .. "}"
   end
-  --return "<h" .. lev .. attributes(attr) ..  ">" .. s .. "</h" .. lev .. ">"
 end
 
 function BlockQuote(s)
@@ -278,7 +287,7 @@ function Table(caption, aligns, widths, headers, rows)
   end
   for _, row in pairs(rows) do
     if (#row>=2) then
-      add('{synopt :' .. row[1] .. '}' .. row[2] .. '{p_end}')
+      add('{synopt:' .. row[1] .. '}' .. row[2] .. '{p_end}')
     end
   end
   if not empty_header then

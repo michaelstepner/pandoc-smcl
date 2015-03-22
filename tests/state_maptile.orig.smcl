@@ -1,14 +1,12 @@
 {smcl}
 
-{pstd}
-{hi:maptile {hline 2} Geography: state}
+{pstd}{hi:maptile {hline 2} Geography: state}
 
 
 {marker description}{...}
 {title:Description}
 
-{pstd}
-{hi:state} generates a map of U.S. states.
+{pstd}{hi:state} generates a map of U.S. states.
 
 {pstd}It displays Alaska and Hawaii rescaled and moved to the bottom left of the map, below the continental US, for ease of viewing.
 
