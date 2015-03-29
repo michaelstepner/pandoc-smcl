@@ -28,6 +28,24 @@ local function escape(s, in_attribute)
     end)
 end
 
+local function shortenlines(s)
+  local l=0
+  local out_string = {}
+  for i in string.gmatch(s, "%S+") do
+    if l==0 then
+      table.insert(out_string, i)
+      l=l+string.len(i)
+    elseif l+1+string.len(i)<200 then
+      table.insert(out_string, ' ' .. i)
+      l=l+1+string.len(i)
+    else
+      table.insert(out_string, '\n' .. i)
+      l=string.len(i)
+    end
+  end
+  return table.concat(out_string)
+end
+
 -- Helper function to convert an attributes table into
 -- a string that can be put into HTML tags.
 local function attributes(attr)
@@ -190,9 +208,9 @@ end
 function Para(s)
   local pdirective = string.match(s, '^{p[^}]*}')
   if (pdirective == nil) then
-    return "{pstd}" .. s .. "{p_end}"
+    return "{pstd}" .. shortenlines(s) .. "{p_end}"
   else
-    return s .. "{p_end}"
+    return shortenlines(s) .. "{p_end}"
   end
 end
 
