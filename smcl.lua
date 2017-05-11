@@ -155,6 +155,7 @@ end
 
 function Link(s, src, tit)
   return "{browse \"" .. escape(src,true) .. "\":" .. s .. "}"
+  --XX need to remove %20 which is replacing spaces
   --return "<a href='" .. escape(src,true) .. "' title='" ..
   --       escape(tit,true) .. "'>" .. s .. "</a>"
 end
